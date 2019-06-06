@@ -1,7 +1,9 @@
 # Homeware
-This API create an integration between hardware devices like ESP8266 or Arduino and the Google Assitant using Firebase for the backend.
+This API creates an integration between hardware devices like ESP8266 or Arduino and the Google Assitant using Firebase for the backend.
 
 <img alt="Super Grover" src="https://github.com/kikeelectronico/homeware/raw/master/images/cloud.png" />
+
+Homeware is not finished yet.
 
 ## Supported Devices
 
@@ -278,10 +280,6 @@ There are some jobs that can be done using a Cron Task.
 
 Note: If you open the Bulb in the Home App and the Bulb it is not online (there isn't any hardware bulb) the app will say `Not responding` and the `online` will change to false in the database. This is normal, it is part of the API.
 
-
-## Connecting an ESP8266
-
-You can use the ESP8266 example to communicate with the API using this hardware.
 
 ***
 
