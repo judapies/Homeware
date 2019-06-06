@@ -5,6 +5,9 @@ This API creates an integration between hardware devices like ESP8266 or Arduino
 
 Homeware is not finished yet.
 
+## Advice
+Use only released versions.
+
 ## Supported Devices
 
 | Device | Status |
