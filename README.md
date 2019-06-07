@@ -26,9 +26,9 @@ Use only released versions.
 2. Connect hardware using the ESP8266 examples.
 3. Learn how to create new devices.
 
-## Google's guides
+## Google guides
 
-You can check the <a href="https://developers.google.com/actions/smarthome/"> Google's guides </a>
+You can check the <a href="https://developers.google.com/actions/smarthome/"> Google guides </a>
 
 ## Help
 
