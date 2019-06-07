@@ -19,8 +19,6 @@ exports.read = functions.https.onRequest((req, res) =>{
   var id = req.query.id;
   console.log('ID');
   console.log(id);
-  //var trait = req.query.trait;
-  //var state = req.query.state;
   var token = req.get("authorization").split(" ")[1];
   var agent = req.get("User-Agent").split(" ")[1];
 
@@ -134,14 +132,12 @@ exports.faketoken = functions.https.onRequest((request, response) => {
     grantType = request.get("grant_type");
   }
 
-
   console.log("id");
   console.log(client_id);
   console.log(client_secret);
   console.log(agent);
   console.log(code);
   console.log(grantType);
-
 
   //Verify specials agents
   if (agent.indexOf("+http://www.google.com/bot.html") > 0){
@@ -227,7 +223,6 @@ app.onSync((body, headers) => {
   //Google data
   var token = headers.authorization.split(" ")[1];
   var agent = headers["user-agent"];
-  console.log("1");
 
   //Verify specials agents
   if (agent.indexOf("+http://www.google.com/bot.html") > 0)
@@ -235,19 +230,13 @@ app.onSync((body, headers) => {
   else if (agent == "OpenAuth")
     agent = "google";
 
-    console.log("2");
-
-
   //Get the tokens and ids from DDBB
   return admin.database().ref('/token/').once('value')
   .then(function(snapshot) {
     var tokenJSON = snapshot.val();
-    console.log("3");
 
     //Verify the token
     if (token == tokenJSON[agent]["access_token"]["value"]){
-      console.log("4");
-
       //Get the list of devices in JSON
       return admin.database().ref('/devices/').once('value')
       .then(function(snapshot) {
@@ -424,11 +413,6 @@ exports.requestsync = functions.https.onRequest((request, response) => {
 
 });
 
-//We send devices states to Google 'on change'
-/*exports.reportstate = functions.database.ref('{deviceId}').onWrite((event) => {
-  console.info('Firebase write event triggered this cloud function');
-});*/
-
 //We send devices to Google 'on change'
 exports.reportdevices = functions.database.ref('/devices/').onUpdate(async (change, context) => {
   const snapshot = change.after.val();
@@ -513,6 +497,5 @@ function expireTokens(){
 exports.cron = functions.https.onRequest((request, response) => {
   updatestates();
   expireTokens();
-
   response.status(200).send("Done");
 });
