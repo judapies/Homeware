@@ -25,6 +25,7 @@
     "ignore": [
       "firebase.json",
       "database-rules.json",
+      "README.md",
       "functions"
     ],
     "headers": [{
