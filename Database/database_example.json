@@ -29,11 +29,34 @@
   },
   "token" : {
     "google" : {
-      "client_id" : "123",
-      "client_secret" : "456"
+      "access_token" : {
+        "timestamp" : 1559911840449,
+        "value" : "token"
+      },
+      "authorization_code" : {
+        "timestamp" : 1559488874863,
+        "value" : "code"
+      },
+      "client_id" : "1234",
+      "client_secret" : "456",
+      "refresh_token" : {
+        "timestamp" : 1559488875703,
+        "value" : "token"
+      }
     },
     "light" : {
-      "authorization_code" : "light-code"
+      "access_token" : {
+        "timestamp" : 1559847064459,
+        "value" : "token"
+      },
+      "authorization_code" : {
+        "timestamp" : "patata",
+        "value" : "llight-code"
+      },
+      "refresh_token" : {
+        "timestamp" : 1559847064459,
+        "value" : "token"
+      }
     }
   }
 }
