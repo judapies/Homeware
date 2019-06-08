@@ -40,7 +40,7 @@ Use only released versions: <a href="https://github.com/kikeelectronico/Homeware
         </tr>
         <tr>
             <td>ThermostatTemperatureSetRange</td>
-            <td> :white_check_mark:</td>
+            <td> :heavy_multiplication_x:</td>
         </tr>
         <tr>
             <td>ThermostatSetMode</td>
@@ -48,7 +48,7 @@ Use only released versions: <a href="https://github.com/kikeelectronico/Homeware
         </tr>
         <tr>
             <td>TemperatureRelative</td>
-            <td> :white_check_mark:</td>
+            <td> :heavy_multiplication_x:</td>
         </tr>
     </tbody>
 </table>
