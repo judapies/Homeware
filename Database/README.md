@@ -4,7 +4,7 @@ The database file defines how the API will act itself. It is based on a JSON str
 
 ## Devices
 
-In this section there are all devices associated with the user, for example lights, thermostats, washers, fans, ...
+In this section are all devices associated with the user, for example lights, thermostats, washers, fans, ...
 
 Each devices must follow the JSON structure define by Google.
 

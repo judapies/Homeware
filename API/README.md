@@ -23,7 +23,7 @@ Go to <a href="https://myaccount.google.com/activitycontrols" target="blanck">Ac
 
 ## Actions on Google Project
 
-Go to the  <a href="https://console.actions.google.com/" target="blanck">Actions on Google console</a>.
+Go to <a href="https://console.actions.google.com/" target="blanck">Actions on Google console</a>.
 
 1. Select `Add/import project`.
 2. Write a name for the project.

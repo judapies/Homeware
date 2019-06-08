@@ -22,9 +22,11 @@ Use only released versions.
 
 ## How to
 
-1. First deploy the API following the instructions. You can find the instructions inside the API folder.
-2. Connect hardware using the ESP8266 examples.
-3. Learn how to create new devices.
+In order to works, you need to use Firebase service from Google and a hardware device like an ESP8266 or similar. Follow this steps:
+
+1. Deploy the API following the instructions. You can find those inside the API folder.
+2. Connect a piece of hardware. You can use the ESP8266 examples.
+3. Learn how to create new devices and enjoy.
 
 ## Google guides
 
