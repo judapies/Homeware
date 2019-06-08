@@ -86,7 +86,7 @@ function tokenGenerator(agent, type){
 
 // GOOGLE ENDPOINTS
 //Verify Google client_id and check the user account
-exports.fakeauth = functions.https.onRequest((request, response) => {
+exports.auth = functions.https.onRequest((request, response) => {
   //Get the tokens and ids from DDBB
   admin.database().ref('/token/').once('value')
   .then(function(snapshot) {
@@ -111,7 +111,7 @@ exports.fakeauth = functions.https.onRequest((request, response) => {
 });
 
 //Verify Google's authorization code and send the token
-exports.faketoken = functions.https.onRequest((request, response) => {
+exports.token = functions.https.onRequest((request, response) => {
 
   //Google data
   var grantType = request.query.grant_type ? request.query.grant_type : request.body.grant_type;

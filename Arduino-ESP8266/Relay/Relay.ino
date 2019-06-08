@@ -153,7 +153,7 @@ void getToken(){
   }
 
   //Send the request
-  client.print(String("GET ") + "/faketoken/" + " HTTP/1.1\r\n" +
+  client.print(String("GET ") + "/token/" + " HTTP/1.1\r\n" +
                "Host: " + host + "\r\n" +
                "User-Agent: " + id + "\r\n" +
                "code: " + code + "\r\n" +
