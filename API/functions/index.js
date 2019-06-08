@@ -377,6 +377,22 @@ app.onExecute((body, headers) => {
                     });
                     payload.commands[0].states.openState = params.openPercent;
                     break;
+                  case 'action.devices.commands.ThermostatTemperatureSetpoint':
+                    //firebaseRef.child(deviceId).child('OpenClose').update({
+                    firebaseRef.child(deviceId).update({
+                      thermostatTemperatureSetpoint: params.thermostatTemperatureSetpoint,
+                    });
+                    payload.commands[0].states.thermostatTemperatureSetpoint = params.thermostatTemperatureSetpoint;
+                    break;
+                  case 'action.devices.commands.ThermostatSetMode':
+                    //firebaseRef.child(deviceId).child('OpenClose').update({
+                    firebaseRef.child(deviceId).update({
+                      thermostatMode: params.thermostatMode,
+                    });
+                    payload.commands[0].states.thermostatMode = params.thermostatMode;
+                    break;
+                    
+
                 }
               }
             }
