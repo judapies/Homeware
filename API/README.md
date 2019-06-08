@@ -183,17 +183,13 @@ https://us-central1-[id].cloudfunctions.net/smarthome
 
 8. Enter the Client Information as follow and click `Next`:
 
-<kbd>
-<img src="https://github.com/kikeelectronico/homeware/raw/master/images/B5C3.png"/>
-</kbd>
-
 
 | Parameter | Value |
 | --- | --- |
 | Client ID | 123 |
 | Client Secret | 456 |
-| Authorization URL | https://us-central1-[id].cloudfunctions.net/fakeauth |
-| Token URL | https://us-central1-[id].cloudfunctions.net/faketoken |
+| Authorization URL | https://us-central1-[id].cloudfunctions.net/auth |
+| Token URL | https://us-central1-[id].cloudfunctions.net/token |
 
 9. Enable `Google to transmit clientID and secret via HTTP basic auth header` in Configure your Client by clicking 'Next'.
 
