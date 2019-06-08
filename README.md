@@ -6,7 +6,7 @@ This API creates an integration between hardware devices like ESP8266 or Arduino
 Homeware is not finished yet.
 
 ## Advice
-Use only released versions.
+Use only released versions: <a href="https://github.com/kikeelectronico/Homeware/releases/latest">Last released</a>
 
 ## Supported Devices
 
