@@ -29,6 +29,11 @@ Use only released versions: <a href="https://github.com/kikeelectronico/Homeware
             <td>:heavy_check_mark:</td>
         </tr>
         <tr>
+            <td>Outlet</td>
+            <td>OnOff</td>
+            <td>:heavy_check_mark:</td>
+        </tr>
+        <tr>
             <td>Blind</td>
             <td>OpenClose</td>
             <td>:heavy_check_mark:</td>

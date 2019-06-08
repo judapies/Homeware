@@ -61,6 +61,16 @@ For example, a light could have three different states:
 
 In this case `light` is the device id
 
+When you create a new device in the *devices* section you **MUST** create its status' JSON and give it a *online* value like so:
+
+```
+"Put device's id here" : {
+  "brightness" : 100,
+  "on" : true,
+  "online" : true
+}
+```
+
 ## Alive
 
 This is used by the API in order to know when was the last time that a device communicate with the API. If the time past is larger than 20 seconds the API considers that the device is offline and change its *online* value in the status section.
@@ -114,7 +124,7 @@ The only thing that you need to change here are the `client_id` and `client_secr
 
 ##### Immportant
 
-When you create a new device in the *devices* section you **MUST** create its token's JSON and assigne it a *authorization_code*. This authorization_code must be used in the Arduino code.
+When you create a new device in the *devices* section you **MUST** create its token's JSON and give it a *authorization_code*. This authorization_code must be used in the Arduino code.
 
 In *light* case the *authorization_code* is `light-code`.
 
