@@ -1,6 +1,6 @@
-# ESP8266 - How to configure it?
+# Library for ESP8266 in the Arduino IDE - How to configure it?
 
-You must prepare the codes changing the next variables:
+You must prepare the codes of this library changing the next variables:
 
 Set the ssid and password for your WiFi connection:
 ```
@@ -13,7 +13,7 @@ const char* host = "us-central1-[id].cloudfunctions.net";
 ```
 Set the unique device ID.
 ```
-String id = "light";
+char* id = "light";
 ```
 
 ##### Important

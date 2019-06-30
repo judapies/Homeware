@@ -21,6 +21,10 @@ exports.read = functions.https.onRequest((req, res) =>{
   console.log(id);
   var token = req.get("authorization").split(" ")[1];
   var agent = req.get("User-Agent").split(" ")[1];
+  var trait = req.query.trait;
+  var value = req.query.value;
+  console.log('trait');
+  console.log(trait);
 
   //Get tokenJSON from DDBB
   admin.database().ref('/token/').once('value')
@@ -34,42 +38,18 @@ exports.read = functions.https.onRequest((req, res) =>{
       admin.database().ref('/alive/').child(id).update({
         timestamp: current_date,
       });
+      //Save the value
+      if (trait){
+        var input_json = {}
+        input_json[trait] = value;
+        admin.database().ref('/status/').child(id).update(input_json);
+        console.log(input_json);
+      }
       //Read state and send a response back
       firebaseRef.child(id).once('value').then(function(snapshot) {
         //var status = ";" + snapshot.val() + ";";
         res.status(200).json(snapshot.val());
       });
-
-    } else { //If the token wasn't correct
-      console.log("Hardware used an incorrect access token");
-      res.status(200).send("Bad token");
-    }
-  });
-});
-
-exports.write = functions.https.onRequest((req, res) =>{
-  //Hardware data
-  var id = req.query.id;
-  console.log('ID');
-  console.log(id);
-  var token = req.get("authorization").split(" ")[1];
-  var agent = req.get("User-Agent").split(" ")[1];
-  var trait = req.query.trait;
-  var value = req.query.value;
-
-  //Get tokenJSON from DDBB
-  admin.database().ref('/token/').once('value')
-  .then(function(snapshot) {
-    var tokenJSON = snapshot.val();
-
-    //Verify the token
-    if (token == tokenJSON[agent]["access_token"]["value"]){
-      //Save the value
-      var input_json = {}
-      input_json[trait] = value;
-      admin.database().ref('/status/').child(id).update(input_json);
-      console.log(input_json);
-      res.status(200).send(input_json);
 
     } else { //If the token wasn't correct
       console.log("Hardware used an incorrect access token");
