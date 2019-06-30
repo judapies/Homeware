@@ -21,6 +21,10 @@ exports.read = functions.https.onRequest((req, res) =>{
   console.log(id);
   var token = req.get("authorization").split(" ")[1];
   var agent = req.get("User-Agent").split(" ")[1];
+  var trait = req.query.trait;
+  var value = req.query.value;
+  console.log('trait');
+  console.log(trait);
 
   //Get tokenJSON from DDBB
   admin.database().ref('/token/').once('value')
@@ -34,6 +38,13 @@ exports.read = functions.https.onRequest((req, res) =>{
       admin.database().ref('/alive/').child(id).update({
         timestamp: current_date,
       });
+      //Save the value
+      if (trait){
+        var input_json = {}
+        input_json[trait] = value;
+        admin.database().ref('/status/').child(id).update(input_json);
+        console.log(input_json);
+      }
       //Read state and send a response back
       firebaseRef.child(id).once('value').then(function(snapshot) {
         //var status = ";" + snapshot.val() + ";";
@@ -377,6 +388,22 @@ app.onExecute((body, headers) => {
                     });
                     payload.commands[0].states.openState = params.openPercent;
                     break;
+                  case 'action.devices.commands.ThermostatTemperatureSetpoint':
+                    //firebaseRef.child(deviceId).child('OpenClose').update({
+                    firebaseRef.child(deviceId).update({
+                      thermostatTemperatureSetpoint: params.thermostatTemperatureSetpoint,
+                    });
+                    payload.commands[0].states.thermostatTemperatureSetpoint = params.thermostatTemperatureSetpoint;
+                    break;
+                  case 'action.devices.commands.ThermostatSetMode':
+                    //firebaseRef.child(deviceId).child('OpenClose').update({
+                    firebaseRef.child(deviceId).update({
+                      thermostatMode: params.thermostatMode,
+                    });
+                    payload.commands[0].states.thermostatMode = params.thermostatMode;
+                    break;
+
+
                 }
               }
             }

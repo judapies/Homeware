@@ -10,11 +10,62 @@ Use only released versions: <a href="https://github.com/kikeelectronico/Homeware
 
 ## Supported Devices
 
-| Device | Status |
-| ------ | ------ |
-| Light | Supported |
-| Blind | Supported |
-| Thermostat | In progress |
+<table>
+    <thead>
+        <tr>
+            <th>Device</th>
+            <th>Commands</th>
+            <th>Supported</th>
+            <th>ESP8266 example</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="2">Light</td>
+            <td>OnOff</td>
+            <td>:heavy_check_mark:</td>
+            <td>:heavy_check_mark:</td>
+        </tr>
+        <tr>
+            <td>BrightnessAbsolute</td>
+            <td>:heavy_check_mark:</td>
+            <td>:heavy_check_mark:</td>
+        </tr>
+        <tr>
+            <td>Outlet</td>
+            <td>OnOff</td>
+            <td>:heavy_check_mark:</td>
+            <td>:heavy_check_mark:</td>
+        </tr>
+        <tr>
+            <td>Blind</td>
+            <td>OpenClose</td>
+            <td>:heavy_check_mark:</td>
+            <td> :heavy_multiplication_x:</td>
+        </tr>
+        <tr>
+            <td rowspan="4">Thermostat</td>
+            <td>ThermostatTemperatureSetpoint</td>
+            <td>:heavy_check_mark:</td>
+            <td> :heavy_multiplication_x:</td>
+        </tr>
+        <tr>
+            <td>ThermostatTemperatureSetRange</td>
+            <td> :heavy_multiplication_x:</td>
+            <td> :heavy_multiplication_x:</td>
+        </tr>
+        <tr>
+            <td>ThermostatSetMode</td>
+            <td>:heavy_check_mark:</td>
+            <td> :heavy_multiplication_x:</td>
+        </tr>
+        <tr>
+            <td>TemperatureRelative</td>
+            <td> :heavy_multiplication_x:</td>
+            <td> :heavy_multiplication_x:</td>
+        </tr>
+    </tbody>
+</table>
 
 ## To Do list
 
