@@ -353,14 +353,12 @@ app.onExecute((body, headers) => {
                 payload.commands[0].states.online = statusJSON[deviceId].online;
                 switch (execCommand) {
                   case 'action.devices.commands.OnOff':
-                    //firebaseRef.child(deviceId).child('OnOff').update({
                     firebaseRef.child(deviceId).update({
                       on: params.on,
                     });
                     payload.commands[0].states.on = params.on;
                     break;
                   case 'action.devices.commands.StartStop':
-                    //firebaseRef.child(deviceId).child('StartStop').update({
                     firebaseRef.child(deviceId).update({
 
                       isRunning: params.start,
@@ -368,41 +366,41 @@ app.onExecute((body, headers) => {
                     payload.commands[0].states.isRunning = params.start;
                     break;
                   case 'action.devices.commands.PauseUnpause':
-                    //firebaseRef.child(deviceId).child('StartStop').update({
                     firebaseRef.child(deviceId).update({
                       isPaused: params.pause,
                     });
                     payload.commands[0].states.isPaused = params.pause;
                     break;
                   case 'action.devices.commands.BrightnessAbsolute':
-                    //firebaseRef.child(deviceId).child('Brightness').update({
                     firebaseRef.child(deviceId).update({
                       brightness: params.brightness,
                     });
                     payload.commands[0].states.brightness = params.brightness;
                     break;
                   case 'action.devices.commands.OpenClose':
-                    //firebaseRef.child(deviceId).child('OpenClose').update({
                     firebaseRef.child(deviceId).update({
                       openPercent: params.openPercent,
                     });
                     payload.commands[0].states.openState = params.openPercent;
                     break;
                   case 'action.devices.commands.ThermostatTemperatureSetpoint':
-                    //firebaseRef.child(deviceId).child('OpenClose').update({
                     firebaseRef.child(deviceId).update({
                       thermostatTemperatureSetpoint: params.thermostatTemperatureSetpoint,
                     });
                     payload.commands[0].states.thermostatTemperatureSetpoint = params.thermostatTemperatureSetpoint;
                     break;
                   case 'action.devices.commands.ThermostatSetMode':
-                    //firebaseRef.child(deviceId).child('OpenClose').update({
                     firebaseRef.child(deviceId).update({
                       thermostatMode: params.thermostatMode,
                     });
                     payload.commands[0].states.thermostatMode = params.thermostatMode;
                     break;
-
+                  case 'action.devices.commands.ColorAbsolute':
+                    firebaseRef.child(deviceId).update({
+                      color: params.color,
+                    });
+                    payload.commands[0].states.color = params.color;
+                    break;
 
                 }
               }
