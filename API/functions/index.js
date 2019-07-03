@@ -26,6 +26,21 @@ exports.read = functions.https.onRequest((req, res) =>{
   console.log('trait');
   console.log(trait);
 
+  //Change vartype
+  var vartype = {
+    thermostatTemperatureAmbient : "int",
+    on: "bool"
+  }
+  if (vartype[trait] == "int"){
+    value = parseInt(value);
+  } else if (vartype[trait] == "bool") {
+    if (value == "true"){
+      value = true;
+    } else {
+      value = false;
+    }
+  }
+
   //Get tokenJSON from DDBB
   admin.database().ref('/token/').once('value')
   .then(function(snapshot) {
