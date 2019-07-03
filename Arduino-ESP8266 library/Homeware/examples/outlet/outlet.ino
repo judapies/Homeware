@@ -67,17 +67,17 @@ void loop() {
     if (error) {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.c_str());
-    }
-
-    state = doc["on"];
-    if (state && !digitalRead(D0)){
-        digitalWrite(D0, HIGH);
-        EEPROM.write(outputEEPROM, 1);
+    } else {
+      state = doc["on"];
+      if (state && !digitalRead(D0)){
+          digitalWrite(D0, HIGH);
+          EEPROM.write(outputEEPROM, 1);
+          EEPROM.commit();
+      } else if (!state && digitalRead(D0)) {
+        digitalWrite(D0, LOW);
+        EEPROM.write(outputEEPROM, 0);
         EEPROM.commit();
-    } else if (!state && digitalRead(D0)) {
-      digitalWrite(D0, LOW);
-      EEPROM.write(outputEEPROM, 0);
-      EEPROM.commit();
+      }
     }
     time_value = millis();
   }

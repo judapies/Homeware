@@ -8,6 +8,7 @@ const char* password = "your-wifi-password";
 char* host = "us-central1-[id].cloudfunctions.net";
 char* id = "light";
 
+
 //General global variables
 long int time_value = 0;
 int outputEEPROM = 10;
@@ -68,20 +69,21 @@ void loop() {
     if (error) {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.c_str());
+    } else {
+      brightness = doc["brightness"];
+      state = doc["on"];
+      Serial.println(brightness);
+      if (state && !digitalRead(D0)){
+          digitalWrite(D0, HIGH);
+          EEPROM.write(outputEEPROM, 1);
+          EEPROM.commit();
+      } else if (!state && digitalRead(D0)) {
+        digitalWrite(D0, LOW);
+        EEPROM.write(outputEEPROM, 0);
+        EEPROM.commit();
+      }
     }
 
-    brightness = doc["brightness"];
-    state = doc["on"];
-    Serial.println(brightness);
-    if (state && !digitalRead(D0)){
-        digitalWrite(D0, HIGH);
-        EEPROM.write(outputEEPROM, 1);
-        EEPROM.commit();
-    } else if (!state && digitalRead(D0)) {
-      digitalWrite(D0, LOW);
-      EEPROM.write(outputEEPROM, 0);
-      EEPROM.commit();
-    }
     time_value = millis();
   }
 
