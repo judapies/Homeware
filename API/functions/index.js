@@ -366,6 +366,11 @@ app.onExecute((body, headers) => {
                 const {params} = execution;
 
                 payload.commands[0].states.online = statusJSON[deviceId].online;
+
+                firebaseRef.child(deviceId).update(params);
+                payload.commands[0].states = params;
+
+                /*
                 switch (execCommand) {
                   case 'action.devices.commands.OnOff':
                     firebaseRef.child(deviceId).update({
@@ -417,7 +422,7 @@ app.onExecute((body, headers) => {
                     payload.commands[0].states.color = params.color;
                     break;
 
-                }
+                }*/
               }
             }
           }
