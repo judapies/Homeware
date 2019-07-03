@@ -21,13 +21,14 @@ Adafruit_BMP280 bmp;
 Homeware api(id, host, &client);
 
 void setup() {
+  //Set output pin using last state from the EEPROM
   pinMode(D0, OUTPUT);
   bool lastState = EEPROM.read(outputEEPROM);
   digitalWrite(D0, lastState);
-
+  //Connect to a WiFI network
   Serial.begin(115200);
   Serial.println();
-  Serial.print("Connecting to ");
+  Serial.print(F("Connecting to "));
   Serial.println(ssid);
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -41,7 +42,7 @@ void setup() {
   Serial.println(WiFi.localIP());
   Serial.print(F("Connecting to "));
   Serial.println(host);
-
+  //Get access token from the API
   Serial.println(F("Getting token"));
   api.getToken();
 
