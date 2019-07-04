@@ -109,11 +109,11 @@ char* Homeware::getJSON(){
   int len = strlen(_json_c);
   _json_c[len] = '}';
   _json_c[len+1] = '\0';
-  
+
   return _json_c;
 }
 
-bool Homeware::sendTrait(char* trait, char* value){
+bool Homeware::sendTrait(char* trait, char* value, char* vartype){
   if (!_client->connect(_host, _httpsPort)) {
     Serial.println("connection failed");
     delay(15000);
@@ -121,10 +121,12 @@ bool Homeware::sendTrait(char* trait, char* value){
   }
   //Save the value
   strcpy(_request, _request_a);
-  strcat(_request, "&trait=");
+  strcat(_request, "&param=");
   strcat(_request, trait);
   strcat(_request, "&value=");
   strcat(_request, value);
+  strcat(_request, "&vartype=");
+  strcat(_request, vartype);
   strcat(_request, _request_b);
 
   //Send the request

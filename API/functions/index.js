@@ -21,19 +21,16 @@ exports.read = functions.https.onRequest((req, res) =>{
   console.log(id);
   var token = req.get("authorization").split(" ")[1];
   var agent = req.get("User-Agent").split(" ")[1];
-  var trait = req.query.trait;
+  var param = req.query.param;
   var value = req.query.value;
-  console.log('trait');
-  console.log(trait);
+  var vartype = req.query.vartype;
+  console.log('param');
+  console.log(param);
 
-  //Change vartype
-  var vartype = {
-    thermostatTemperatureAmbient : "int",
-    on: "bool"
-  }
-  if (vartype[trait] == "int"){
+  //Change va
+  if (vartype == "int"){
     value = parseInt(value);
-  } else if (vartype[trait] == "bool") {
+  } else if (vartype == "bool") {
     if (value == "true"){
       value = true;
     } else {
@@ -54,9 +51,9 @@ exports.read = functions.https.onRequest((req, res) =>{
         timestamp: current_date,
       });
       //Save the value
-      if (trait){
+      if (param){
         var input_json = {}
-        input_json[trait] = value;
+        input_json[param] = value;
         admin.database().ref('/status/').child(id).update(input_json);
         console.log(input_json);
       }

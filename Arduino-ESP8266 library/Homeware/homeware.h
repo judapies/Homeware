@@ -25,5 +25,5 @@ public:
   void test();
   void getToken();
   char* getJSON();
-  bool sendTrait(char* trait, char* value);
+  bool sendTrait(char* trait, char* value, char* vartype);
 };

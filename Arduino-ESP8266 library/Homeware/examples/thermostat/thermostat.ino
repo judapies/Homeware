@@ -70,7 +70,7 @@ void loop() {
     char n[2];
     int i=bmp.readTemperature();
     sprintf(n, "%d", i);
-    api.sendTrait("thermostatTemperatureAmbient", n);
+    api.sendTrait("thermostatTemperatureAmbient", n, "int");
     //Get mode and temperarure
     strcpy(json_c, api.getJSON());
     StaticJsonDocument<200> doc;
