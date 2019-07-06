@@ -6,16 +6,18 @@
 const char* ssid = "your-wifi-ssid";
 const char* password = "your-wifi-password";
 char* host = "us-central1-[id].cloudfunctions.net";
-char* id = "outlet";
+char* id = "thermostat";
 
 //General global variables
 long int time_value = 0;
 int outputEEPROM = 10;
 char json_c[200];
-bool state = false;
+char mode[30];
+int temperatureSetPoint = 0;
 
 //Objects
 WiFiClientSecure client;
+Adafruit_BMP280 bmp;
 Homeware api(id, host, &client);
 
 void setup() {
@@ -43,6 +45,10 @@ void setup() {
   //Get access token from the API
   Serial.println(F("Getting token"));
   api.getToken();
+
+  if (!bmp.begin()) {
+    Serial.println(F("Could not find the sensor, check wiring or I2C address"));
+  }
 }
 
 void loop() {
@@ -58,28 +64,28 @@ void loop() {
     Serial.println("WiFi connection recovered");
   }
 
-  //Get state
+  //Get state or token
   if (millis() - time_value > 1000){
+    //Send temperature
+    char n[2];
+    int i=bmp.readTemperature();
+    sprintf(n, "%d", i);
+    api.sendTrait("thermostatTemperatureAmbient", n, "int");
+    //Get mode and temperarure
     strcpy(json_c, api.getJSON());
     StaticJsonDocument<200> doc;
     DeserializationError error = deserializeJson(doc, json_c);
-
     if (error) {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.c_str());
     } else {
-      state = doc["on"];
-      if (state && !digitalRead(D0)){
-          digitalWrite(D0, HIGH);
-          EEPROM.write(outputEEPROM, 1);
-          EEPROM.commit();
-      } else if (!state && digitalRead(D0)) {
-        digitalWrite(D0, LOW);
-        EEPROM.write(outputEEPROM, 0);
-        EEPROM.commit();
-      }
-    }
+      strcpy(mode, doc["thermostatMode"]);
+      temperatureSetPoint = doc["thermostatTemperatureSetpoint"];
+      Serial.print(mode);
+      Serial.print(" - ");
+      Serial.println(temperatureSetPoint);
 
+    }
     time_value = millis();
   }
 

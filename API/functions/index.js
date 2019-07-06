@@ -21,10 +21,22 @@ exports.read = functions.https.onRequest((req, res) =>{
   console.log(id);
   var token = req.get("authorization").split(" ")[1];
   var agent = req.get("User-Agent").split(" ")[1];
-  var trait = req.query.trait;
+  var param = req.query.param;
   var value = req.query.value;
-  console.log('trait');
-  console.log(trait);
+  var vartype = req.query.vartype;
+  console.log('param');
+  console.log(param);
+
+  //Change va
+  if (vartype == "int"){
+    value = parseInt(value);
+  } else if (vartype == "bool") {
+    if (value == "true"){
+      value = true;
+    } else {
+      value = false;
+    }
+  }
 
   //Get tokenJSON from DDBB
   admin.database().ref('/token/').once('value')
@@ -39,9 +51,9 @@ exports.read = functions.https.onRequest((req, res) =>{
         timestamp: current_date,
       });
       //Save the value
-      if (trait){
+      if (param){
         var input_json = {}
-        input_json[trait] = value;
+        input_json[param] = value;
         admin.database().ref('/status/').child(id).update(input_json);
         console.log(input_json);
       }
@@ -351,16 +363,19 @@ app.onExecute((body, headers) => {
                 const {params} = execution;
 
                 payload.commands[0].states.online = statusJSON[deviceId].online;
+
+                firebaseRef.child(deviceId).update(params);
+                payload.commands[0].states = params;
+
+                /*
                 switch (execCommand) {
                   case 'action.devices.commands.OnOff':
-                    //firebaseRef.child(deviceId).child('OnOff').update({
                     firebaseRef.child(deviceId).update({
                       on: params.on,
                     });
                     payload.commands[0].states.on = params.on;
                     break;
                   case 'action.devices.commands.StartStop':
-                    //firebaseRef.child(deviceId).child('StartStop').update({
                     firebaseRef.child(deviceId).update({
 
                       isRunning: params.start,
@@ -368,43 +383,43 @@ app.onExecute((body, headers) => {
                     payload.commands[0].states.isRunning = params.start;
                     break;
                   case 'action.devices.commands.PauseUnpause':
-                    //firebaseRef.child(deviceId).child('StartStop').update({
                     firebaseRef.child(deviceId).update({
                       isPaused: params.pause,
                     });
                     payload.commands[0].states.isPaused = params.pause;
                     break;
                   case 'action.devices.commands.BrightnessAbsolute':
-                    //firebaseRef.child(deviceId).child('Brightness').update({
                     firebaseRef.child(deviceId).update({
                       brightness: params.brightness,
                     });
                     payload.commands[0].states.brightness = params.brightness;
                     break;
                   case 'action.devices.commands.OpenClose':
-                    //firebaseRef.child(deviceId).child('OpenClose').update({
                     firebaseRef.child(deviceId).update({
                       openPercent: params.openPercent,
                     });
                     payload.commands[0].states.openState = params.openPercent;
                     break;
                   case 'action.devices.commands.ThermostatTemperatureSetpoint':
-                    //firebaseRef.child(deviceId).child('OpenClose').update({
                     firebaseRef.child(deviceId).update({
                       thermostatTemperatureSetpoint: params.thermostatTemperatureSetpoint,
                     });
                     payload.commands[0].states.thermostatTemperatureSetpoint = params.thermostatTemperatureSetpoint;
                     break;
                   case 'action.devices.commands.ThermostatSetMode':
-                    //firebaseRef.child(deviceId).child('OpenClose').update({
                     firebaseRef.child(deviceId).update({
                       thermostatMode: params.thermostatMode,
                     });
                     payload.commands[0].states.thermostatMode = params.thermostatMode;
                     break;
+                  case 'action.devices.commands.ColorAbsolute':
+                    firebaseRef.child(deviceId).update({
+                      color: params.color,
+                    });
+                    payload.commands[0].states.color = params.color;
+                    break;
 
-
-                }
+                }*/
               }
             }
           }

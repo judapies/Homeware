@@ -256,3 +256,37 @@ There are some jobs that can be done using a Cron Task.
 4. Change the Bulb status from the App, it should change in the database
 
 Note: If you open the Bulb in the Home App and the Bulb it is not online (there isn't any hardware bulb) the app will say `Not responding` and the `online` will change to false in the database. This is normal, it is part of the API.
+
+# Deploy the CMS Console
+
+The console allow you to manage your devices.
+
+1. Go to <a href="https://console.firebase.google.com" target="blanck">Firebase Console</a>.
+
+2. Click in the gear icon in the left side menu and select `Project Configuration`.
+
+<kbd>
+<img src="https://github.com/kikeelectronico/homeware/raw/master/images/B2C6.png"/>
+</kbd>
+
+3. Take note of the `Web API key` for later.
+
+4. Go to `public` folder and configure the API key and the Project ID in all the JS files.
+
+5. Go back to `API` directory and run:
+
+```Markdown
+firebase deploy --only hosting
+```
+
+6. The deploy is complete. Go to https://[id].firebaseapp.com/cms/ (changing your project id) and you will see a log in page.
+
+## Create a valid user
+
+1. Go to <a href="https://console.firebase.google.com" target="blanck">Firebase Console</a>.
+
+2. Click the `Authentication` option under Develop in the left side menu.
+
+3. Go to `SIGN-IN METHOD` tab and enable `Email/Password`.
+
+4. Create a new user from `USERS` tab.

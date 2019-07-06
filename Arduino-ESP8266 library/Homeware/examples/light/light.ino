@@ -27,7 +27,7 @@ void setup() {
   //Connect to a WiFI network
   Serial.begin(115200);
   Serial.println();
-  Serial.print("Connecting to ");
+  Serial.print(F("Connecting to "));
   Serial.println(ssid);
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -35,14 +35,14 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
+  Serial.println(F(""));
+  Serial.println(F("WiFi connected"));
+  Serial.println(F("IP address: "));
   Serial.println(WiFi.localIP());
-  Serial.print("Connecting to ");
+  Serial.print(F("Connecting to "));
   Serial.println(host);
   //Get access token from the API
-  Serial.println("Getting token");
+  Serial.println(F("Getting token"));
   api.getToken();
 }
 
@@ -68,20 +68,21 @@ void loop() {
     if (error) {
       Serial.print(F("deserializeJson() failed: "));
       Serial.println(error.c_str());
+    } else {
+      brightness = doc["brightness"];
+      state = doc["on"];
+      Serial.println(brightness);
+      if (state && !digitalRead(D0)){
+          digitalWrite(D0, HIGH);
+          EEPROM.write(outputEEPROM, 1);
+          EEPROM.commit();
+      } else if (!state && digitalRead(D0)) {
+        digitalWrite(D0, LOW);
+        EEPROM.write(outputEEPROM, 0);
+        EEPROM.commit();
+      }
     }
 
-    brightness = doc["brightness"];
-    state = doc["on"];
-    Serial.println(brightness);
-    if (state && !digitalRead(D0)){
-        digitalWrite(D0, HIGH);
-        EEPROM.write(outputEEPROM, 1);
-        EEPROM.commit();
-    } else if (!state && digitalRead(D0)) {
-      digitalWrite(D0, LOW);
-      EEPROM.write(outputEEPROM, 0);
-      EEPROM.commit();
-    }
     time_value = millis();
   }
 
