@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Ramabhadra&display=swap" rel="stylesheet">
+
+    <title>System</title>
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/cms/">Homeware</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/cms/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/cms/devices/">Devices</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cms/scenes/">Scens</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/cms/rules/">Rules</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/kikeelectronico/Homeware">Repo</a>
+          </li>
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="logout">Log Out</button>
+        </form>
+      </div>
+    </nav>
+
+    <div id="grid" class="container containerP">
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-danger" role="alert">
+            <h2>Take note</h2>
+            - Be careful when changing data, once saved, a sync request will be sent to Google Home Graph!<br>
+            - Modes are not supported yet.
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div id="alertContainer"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form id=formulario"">
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="text-align: right">
+              <button type="button" class="btn btn-danger" id="deleteDevice">Delete device</button>
+              <button type="button" class="btn btn-primary" id="save">Save</button>
+              <input type="hidden" id="n" value="-1">
+              <input type="hidden" id="default_names" value="">
+              <input type="hidden" id="nick_names" value="">
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>ID and type</h3>
+              <div class="form-group">
+                <label for="id">Device ID:</label>
+                <input type="text" class="form-control" id="id" >
+              </div>
+              <div class="form-group">
+                <label for="type">Type:</label>
+                <select class="form-control" id="type" onchange="updateTraits('no')">
+                  <option>Select a trait</option>
+                  <option>action.devices.types.AC_UNIT</option>
+                  <option>action.devices.types.AIRFRESHENER</option>
+                  <option>action.devices.types.AIRPURIFIER</option>
+                  <option>action.devices.types.AWNING</option>
+                  <option>action.devices.types.BLINDS</option>
+                  <option>action.devices.types.BOILER</option>
+                  <option>action.devices.types.CAMERA</option>
+                  <option>action.devices.types.COFFEE_MAKER</option>
+                  <option>action.devices.types.CURTAIN</option>
+                  <option>action.devices.types.DISHWASHER</option>
+                  <option>action.devices.types.DOOR</option>
+                  <option>action.devices.types.DRYER</option>
+                  <option>action.devices.types.FAN</option>
+                  <option>action.devices.types.FIREPLACE</option>
+                  <option>action.devices.types.GARAGE</option>
+                  <option>action.devices.types.GATE</option>
+                  <option>action.devices.types.HEATER</option>
+                  <option>action.devices.types.HOOD</option>
+                  <option>action.devices.types.KETTLE</option>
+                  <option>action.devices.types.LIGHT</option>
+                  <option>action.devices.types.LOCK</option>
+                  <option>action.devices.types.MOP</option>
+                  <option>action.devices.types.MICROWAVE</option>
+                  <option>action.devices.types.OUTLET</option>
+                  <option>action.devices.types.OVEN</option>
+                  <option>action.devices.types.PERGOLA</option>
+                  <option>action.devices.types.REFRIGERATOR</option>
+                  <option>action.devices.types.SCENE</option>
+                  <option>action.devices.types.SECURITYSYSTEM</option>
+                  <option>action.devices.types.SHUTTER</option>
+                  <option>action.devices.types.SHOWER</option>
+                  <option>action.devices.types.SPRINKLER</option>
+                  <option>action.devices.types.SWITCH</option>
+                  <option>action.devices.types.THERMOSTAT</option>
+                  <option>action.devices.types.VACUUM</option>
+                  <option>action.devices.types.VALVE</option>
+                  <option>action.devices.types.WASHER</option>
+                  <option>action.devices.types.WATERHEATER</option>
+                  <option>action.devices.types.WINDOW</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Traits</h3>
+              <div class="form-group">
+                <label for="traits">Traits</label>
+                <select multiple class="form-control" id="trais" onchange="updateTraitsDependencies()">
+                  <option>Select a device type first</option>
+                </select>
+                <small id="emailHelp" class="form-text text-muted">Select all you need using <i>Ctrl</i> key.</small>
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Toggles">
+              <h3>Attribute: Toggles</h3>
+              <input type="hidden" value="-1" id="availableToggles">
+              <div class="row" id="badge_toggles_container">
+                <!--Toggles cards-->
+              </div>
+              <hr>
+              <div class="form-row">
+                <div class="form-group col-md-1">
+                  <label for="languaje_toogle">Languaje:</label>
+                  <select class="form-control" id="languaje_toggle">
+                    <option>en</option>
+                    <option>es</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="name_toggle">Name:</label>
+                  <input type="text" class="form-control" id="name_toggle" placeholder="Write a name">
+                </div>
+                <div class="form-group col-md-7">
+                  <label for="synonyms_toggle">Synonymous:</label>
+                  <input type="text" class="form-control" id="synonyms_toggle" placeholder="Write synonyms separated by ;">
+                </div>
+                <div class="form-group col-md-1">
+                  <label for="add_toggle_button">.</label>
+                  <input type="button" class="form-control" id="add_toggle_button" value="Add" onclick="addToggle()">
+                </div>
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" name="trait_container" id="action.devices.traits.ArmDisarm">
+              <h3>Attribute: ArmDisarm</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.CameraStream">
+              <h3>Attribute: CameraStream</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.ColorSetting">
+              <h3>Attribute: ColorSetting</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.FanSpeed">
+              <h3>Attribute: FanSpeed</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.LightEffects">
+              <h3>Attribute: LightEffects</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Modes">
+              <h3>Attribute: Modes</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.OnOff">
+              <h3>Attribute: OnOff</h3>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="customSwitch_commandOnlyOnOff">
+                    <label class="custom-control-label" for="customSwitch_commandOnlyOnOff">commandOnlyOnOff</label>
+                    <small id="emailHelp" class="form-text text-muted">Enable it if the hardware can not confirm its status after execute a command.</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.OpenClose">
+              <h3>Attribute: OpenClose</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Scene">
+              <h3>Attribute: Scene</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.StartStop">
+              <h3>Attribute: StartStop</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.TemperatureControl">
+              <h3>Attribute: TemperatureControl</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.TemperatureSetting">
+              <h3>Attribute: TemperatureSetting</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+            <div class="container p-3 mb-2 bg-light text-dark" style="display: none;" id="action.devices.traits.Timer">
+              <h3>Attribute: Timer</h3>
+              <p>This atribut hasn't been developed yet. If you really need it, open an issue on <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a>. Meanwhile you can enter the attributes directly on the database.</p>
+            </div>
+
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Device Info</h3>
+              <div class="form-group">
+                <label for="hwVersion">Hardware version:</label>
+                <input type="text" class="form-control" id="hwVersion" >
+              </div>
+              <div class="form-group">
+                <label for="swVersion">Firmware version:</label>
+                <input type="text" class="form-control" id="swVersion"  >
+              </div>
+              <div class="form-group">
+                <label for="manufacturer">Manufacturer:</label>
+                <input type="text" class="form-control" id="manufacturer" >
+              </div>
+              <div class="form-group">
+                <label for="model">Model:</label>
+                <input type="text" class="form-control" id="model"  >
+              </div>
+              <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name"  >
+              </div>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark">
+              <h3>Default names</h3>
+              <div id="badge_default_names_container">
+
+              </div>
+              <hr>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="add_default_names" placeholder="Write a new one and click Add" >
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="add_default_name_button"  onclick="addName('default_names')">Add</button>
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">A list separeted by ;</small>
+            </div>
+
+            <div class="container p-3 mb-2 bg-light text-dark ">
+              <h3>Nick names</h3>
+              <div id="badge_nick_names_container">
+
+              </div>
+              <hr>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="add_nick_names" placeholder="Write a new one and click Add" >
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" id="add_nick_names_button" onclick="addName('nick_names')">Add</button>
+                </div>
+              </div>
+              <small id="emailHelp" class="form-text text-muted">A list separeted by ;</small>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
+    <script src="/edit_device.js"></script>
+    <script src="/secure.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

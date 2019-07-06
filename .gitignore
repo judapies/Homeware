@@ -3,9 +3,7 @@ API/functions/node_modules/
 API/.firebase
 API/functions/key.json
 API/firebase-debug.log
-API/public/main.js
 API/public/clock.js
-API/public/main.css
-API/public/panel.html
+API/public/credentials.txt
 NP_Arduino-ESP8266/
 .firebaserc

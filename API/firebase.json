@@ -18,6 +18,22 @@
         "destination": "/panel.html"
       },
       {
+        "source": "/cms/",
+        "destination": "/cms.html"
+      },
+      {
+        "source": "/cms/login/",
+        "destination": "/login.html"
+      },
+      {
+        "source": "/cms/devices/",
+        "destination": "/devices.html"
+      },
+      {
+        "source": "/cms/devices/edit/**",
+        "destination": "/edit_device.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
