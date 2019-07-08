@@ -1,5 +1,8 @@
 #include <homeware.h>
+#include <ArduinoJson.h>
 #include <EEPROM.h>
+#include <Wire.h>
+#include <Adafruit_BMP280.h>
 
 
 //Config this section
