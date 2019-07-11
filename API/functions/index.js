@@ -238,7 +238,6 @@ exports.token = functions.https.onRequest((request, response) => {
 const app = smarthome({
   debug: true,
   key: functions.config()['system']['api-key'],
-  jwt: require('./key.json'),
 });
 
 //Google ask for the devices' list
