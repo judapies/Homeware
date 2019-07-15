@@ -25,7 +25,7 @@ Go to <a href="https://myaccount.google.com/activitycontrols" target="blanck">Ac
 
 Go to <a href="https://console.actions.google.com/" target="blanck">Actions on Google console</a>.
 
-1. Select `Add/import project`.
+1. Select `New project`.
 2. Write a name for the project.
 
 <kbd>
@@ -44,13 +44,13 @@ Go to <a href="https://console.actions.google.com/" target="blanck">Actions on G
 <img src="https://github.com/kikeelectronico/homeware/raw/master/images/B2C4.png"/>
 </kbd>
 
-5. Go to `Invocation` under `Setup` in the left side menu.
+5. Go to `Develop` from the top manu and select `Invocation` in the left side menu.
 
 6. Write `Home` as Display Name and click `Save`.
 
-7. Go to `Backend service` under `Advanced Options` in the left side menu.
+7. Go to <a href="https://console.firebase.google.com" target="blanck">Firebase console</a>.
 
-8. Click in `View in Firebase`.
+8. Select the project.
 
 <kbd>
 <img src="https://github.com/kikeelectronico/homeware/raw/master/images/B2C5.png"/>
@@ -156,18 +156,18 @@ firebase deploy
 
 ## Configure the project in Actions on Google
 
-1. Select the <a href="https://console.firebase.google.com" target="blanck">Firebase console</a> and select the project.
+1. Go to the <a href="https://console.firebase.google.com" target="blanck">Firebase console</a> and select the project.
 
-2. Select `Actions` under `Build` section in the left side menu.
+2. Select `Develop` from the top menu and then select `Actions` in the left side menu.
 
 3. Add the fullfillment URL using your project ID (You get it in step 10 from Actions on Google Project).
 
 ```Markdown
 https://us-central1-[id].cloudfunctions.net/smarthome
 ```
-4. Select `Done`.
+4. Select `Save`.
 
-5. Go to `Account Linking` under `Advenced Options` in the left side menu.
+5. Go to `Account Linking` in the left side menu.
 
 6. Select `No, I only want to allow account creation on my website` and clic `Next`.
 
@@ -198,7 +198,7 @@ https://us-central1-[id].cloudfunctions.net/smarthome
 ```Markdown
 No authentication needed
 ```
-11. Go to `Simulator` under `Test` section in the left side menu.
+11. Go to the `Test` section in the top menu.
 
 12. Select `START TESTING`.
 
