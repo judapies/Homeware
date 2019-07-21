@@ -31,10 +31,12 @@
             document.getElementById("id").value = device.id;
             document.getElementById("id").readOnly = true;
             document.getElementById("type").value = device.type;
-            document.getElementById("hwVersion").value = device.deviceInfo.hwVersion;
-            document.getElementById("swVersion").value = device.deviceInfo.swVersion;
-            document.getElementById("manufacturer").value = device.deviceInfo.manufacturer;
-            document.getElementById("model").value = device.deviceInfo.model;
+            if(device.deviceInfo){
+              document.getElementById("hwVersion").value = device.deviceInfo.hwVersion;
+              document.getElementById("swVersion").value = device.deviceInfo.swVersion;
+              document.getElementById("manufacturer").value = device.deviceInfo.manufacturer;
+              document.getElementById("model").value = device.deviceInfo.model;
+            }
             document.getElementById("name").value = device.name.name;
             //Show traits
             updateTraits(device.traits);
@@ -193,6 +195,10 @@
                 document.getElementById("customSwitch_pausable").checked = device.attributes.pausable;
               }
 
+              if(device.attributes.sceneReversible){
+                document.getElementById("customSwitch_sceneReversible").checked = device.attributes.sceneReversible;
+              }
+
             }
           }
       });
@@ -203,12 +209,6 @@
   save.addEventListener('click', e => {
     //Compose JSON
     var device = {
-      deviceInfo : {
-        hwVersion: document.getElementById("hwVersion").value,
-        manufacturer: document.getElementById("manufacturer").value,
-        model:  document.getElementById("model").value,
-        swVersion:  document.getElementById("swVersion").value
-      },
       id: document.getElementById("id").value,
       name: {
         defaultNames: [],
@@ -219,6 +219,16 @@
       },
       traits: [],
       type: document.getElementById("type").value
+    }
+
+    //Save commandOnlyOnOff
+    if(document.getElementById("hwVersion").value != ""){
+      device.deviceInfo = {
+        hwVersion: document.getElementById("hwVersion").value,
+        manufacturer: document.getElementById("manufacturer").value,
+        model:  document.getElementById("model").value,
+        swVersion:  document.getElementById("swVersion").value
+      };
     }
 
     //Save traits
@@ -390,26 +400,40 @@
       device.attributes.pausable = document.getElementById("customSwitch_pausable").checked;
     }
 
+    //Save commandOnlyOnOff
+    if(document.getElementById("customSwitch_sceneReversible").checked){
+      device.attributes.sceneReversible = document.getElementById("customSwitch_sceneReversible").checked;
+    }
+
     console.log(device);
 
     //Save the data in the database
     var n = document.getElementById("n").value;
     devicesRef.child(n).update(device);
     console.log(device);
+
+    //Check if it is a scene
+    var online = false;
+    if(document.getElementById("trais").value == "action.devices.traits.Scene"){
+      online = true;
+    } else {
+      //Save the new timestamp
+      var current_date = new Date().getTime();
+      aliveRef.child(document.getElementById("id").value).update({
+        timestamp: current_date,
+      });
+      //Save the authorization_code
+      var code = document.getElementById("id").value + "-code";
+      tokensRef.child(document.getElementById("id").value).update({
+        authorization_code: {
+          value: code
+        }
+      });
+    }
+
+    //Save online status
     statusRef.child(document.getElementById("id").value).update({
-      online: true
-    });
-    //Save the new timestamp
-    var current_date = new Date().getTime();
-    aliveRef.child(document.getElementById("id").value).update({
-      timestamp: current_date,
-    });
-    //Save the authorization_code
-    var code = document.getElementById("id").value + "-code";
-    tokensRef.child(document.getElementById("id").value).update({
-      authorization_code: {
-        value: code
-      }
+      online: online
     });
 
 
@@ -732,6 +756,9 @@ function updateTraits(deviceTrait){
     "action.devices.types.WINDOW": [
           "action.devices.traits.LockUnlock",
           "action.devices.traits.OpenClose"
+    ],
+    "action.devices.types.SCENE": [
+          "action.devices.traits.Scene"
     ]
   }
 

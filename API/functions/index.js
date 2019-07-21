@@ -17,15 +17,11 @@ const deviceAliveTimeout = 20000;
 exports.read = functions.https.onRequest((req, res) =>{
   //Hardware data
   var id = req.query.id;
-  console.log('ID');
-  console.log(id);
   var token = req.get("authorization").split(" ")[1];
   var agent = req.get("User-Agent").split(" ")[1];
   var param = req.query.param;
   var value = req.query.value;
   var vartype = req.query.vartype;
-  console.log('param');
-  console.log(param);
 
   //Change va
   if (vartype == "int"){
@@ -55,7 +51,6 @@ exports.read = functions.https.onRequest((req, res) =>{
         var input_json = {}
         input_json[param] = value;
         admin.database().ref('/status/').child(id).update(input_json);
-        console.log(input_json);
       }
       //Read state and send a response back
       firebaseRef.child(id).once('value').then(function(snapshot) {
@@ -155,12 +150,6 @@ exports.token = functions.https.onRequest((request, response) => {
     grantType = request.get("grant_type");
   }
 
-  console.log("id");
-  console.log(client_id);
-  console.log(client_secret);
-  console.log(agent);
-  console.log(code);
-  console.log(grantType);
 
   //Verify specials agents
   if (agent.indexOf("+http://www.google.com/bot.html") > 0){
@@ -263,7 +252,6 @@ app.onSync((body, headers) => {
       return admin.database().ref('/devices/').once('value')
       .then(function(snapshot) {
         var devicesJSON = snapshot.val();
-        console.log(devicesJSON);
 
         //Send the JSON back to Google
         return {
@@ -516,9 +504,7 @@ function expireTokens(){
         //Verify access token
         var timestamp = tokenJSON[device][toCheck[i]].timestamp;
         if (current_date - timestamp > expireTime[i]){
-          if (device != "google"){
-            console.log("Hardware's authorization_code is not changed for now")
-          } else {
+          if (device == "google"){
             //Change the value in the DDBB
             admin.database().ref('/token/').child(device).child(toCheck[i]).update({
               value: "-",
@@ -539,4 +525,29 @@ exports.cron = functions.https.onRequest((request, response) => {
   updatestates();
   expireTokens();
   response.status(200).send("Done");
+});
+
+//Rules execution
+exports.rules = functions.database.ref('/status/').onUpdate(async (change, context) => {
+  const status = change.after.val();
+  console.log("Done");
+
+
+  admin.database().ref('/rules/').once('value')
+  .then(function(rulesSnap) {
+    var rules = rulesSnap.val();
+
+    Object(rules).forEach(function(rule){
+      if(status[rule.trigger.id][rule.trigger.param] == rule.trigger.value){
+        /*var json = {};
+        json[rule.target[1].id] = rule.target[1].value*/
+
+        Object(rule.targets).forEach(function(target){
+          var json = {};
+          json[target.param] = target.value;
+          admin.database().ref().child("status").child(target.id).update(json);
+        });
+      }
+    });
+  });
 });

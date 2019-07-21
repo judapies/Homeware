@@ -22,13 +22,13 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="/cms/">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/cms/devices/">Devices</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="/cms/rules/">Rules</a>
           </li>
           <li class="nav-item">
@@ -42,17 +42,20 @@
       </div>
     </nav>
 
-    <div id="grid" style="margin-top: 20px;">
-      <div class="row">
+    <div id="grid" class="container">
+      <div class="row rowP">
         <div class="col">
-          <div class="container p-3 mb-2 bg-light text-dark">
-            <h2>Welcome</h2>
-            <p> If you have any trouble, petition or new idea for Homeware, open an issue on   <a href="https://github.com/kikeelectronico/Homeware/issues" target="blanck">Github</a> </p>
-          </div>
+          <button type="button" class="btn btn-primary" onclick="window.location.href='/cms/rules/edit/'">New rule</button>
         </div>
       </div>
-      
+      <hr class="hrWhite">
+      <h2>Rules</h2>
+      <div class="row rowP" id="rulesList">
+
+      </div>
     </div>
+
+
 
     <div id="toastBoard" aria-live="polite" aria-atomic="true" style="position:absolute; bottom:0; min-height: 200px;  width: 100%;">
       <!-- Position it -->
@@ -63,7 +66,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/3.5.0/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase-database.js"></script>
-    <script src="/cms.js"></script>
+    <script src="/rules.js"></script>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

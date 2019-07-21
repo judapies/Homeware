@@ -34,6 +34,14 @@
         "destination": "/edit_device.html"
       },
       {
+        "source": "/cms/rules/",
+        "destination": "/rules.html"
+      },
+      {
+        "source": "/cms/rules/edit/**",
+        "destination": "/edit_rules.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
