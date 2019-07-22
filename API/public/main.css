@@ -2,10 +2,14 @@ html, body {
  margin:0;
  padding:0;
  height:90%;
- background-color: #222;
+ background-color: #eee;
 }
 h1 {
-  color: white;
+  color: black;
+}
+
+h2 {
+  color: black;
 }
 
 .btnLogOut{
@@ -44,18 +48,8 @@ h1 {
   height: 20px;
 }
 
-.yellow04{
-  background-color: rgba(255,255,0,0.4);
-}
-
-.yellow1{
-  background-color: rgba(255,255,0,1);
-}
-
-.blue04{
-  background-color: rgba(0,0,255,0.4);
-}
-
-.blue1{
-  background-color: rgba(0,0,255,1);
+.hrWhite{
+  border-top: 1px solid #ccc;
+  width: 90%;
+  margin-left: 5%;
 }
