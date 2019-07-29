@@ -1,11 +1,5 @@
 (function () {
 
-  var config = {
-    apiKey: "<your-apikey>",
-    authDomain: "<project-id>.firebaseapp.com",
-    databaseURL: "https://<project-id>.firebaseio.com",
-  };
-
   firebase.initializeApp(config);
 
   // Get a statusRef to the database service
@@ -18,190 +12,199 @@
       //hello();
       var obj = snap.val();
       //Find device index
-      document.getElementById("n").value = Object.keys(obj).length;
-      Object.keys(obj).forEach(function(n){
-        if (obj[n].id == getParameterByName('id')){
-            document.getElementById("n").value = n;
-        }
-      });
+      try{
+        console.log(Object.keys(obj).length);
+        document.getElementById("n").value = Object.keys(obj).length;
 
-      //Get device info
-      Object(obj).forEach(function(device){
-          if (device.id == getParameterByName('id')){
-            document.getElementById("id").value = device.id;
-            document.getElementById("id").readOnly = true;
-            document.getElementById("type").value = device.type;
-            if(device.deviceInfo){
-              document.getElementById("hwVersion").value = device.deviceInfo.hwVersion;
-              document.getElementById("swVersion").value = device.deviceInfo.swVersion;
-              document.getElementById("manufacturer").value = device.deviceInfo.manufacturer;
-              document.getElementById("model").value = device.deviceInfo.model;
-            }
-            document.getElementById("name").value = device.name.name;
-            //Show traits
-            updateTraits(device.traits);
-            updateThermostatModes([]);
-            //Show default names
-            var html = "";
-            var string = "";
-            Object(device.name.defaultNames).forEach(function(name){
-              html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteName(\'default_names\',\'' + name + '\')">' + name + '</button>';
-              string += name + ';';
-            });
-            document.getElementById("badge_default_names_container").innerHTML = html;
-            document.getElementById("default_names").value = string;
-            //Show nick names
-            var html = "";
-            var string = "";
-            Object(device.name.nicknames).forEach(function(name){
-              html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteName(\'nick_names\',\'' + name + '\')">' + name + '</button>';
-              string += name + ';';
-            });
-            document.getElementById("badge_nick_names_container").innerHTML = html;
-            document.getElementById("nick_names").value = string;
-            //Show attributes
-            if(device.attributes){
-              if(device.attributes.availableToggles){
-                var availableToggles = device.attributes.availableToggles;
-                var html = "";
-                Object(availableToggles).forEach(function(toggle){
-                  html += composeToggle(toggle.name, toggle.names_values.lang, toggle.names_values.name_synonym);
-                });
-
-                document.getElementById("availableToggles").value = JSON.stringify(availableToggles);
-                document.getElementById("badge_toggles_container").innerHTML = html
-              }
-
-              if(device.attributes.commandOnlyOnOff){
-                document.getElementById("customSwitch_commandOnlyOnOff").checked = device.attributes.commandOnlyOnOff;
-              }
-
-              if(device.attributes.colorModel){
-                document.getElementById("colorModel").value = device.attributes.colorModel;
-              }
-              if(device.attributes.colorTemperatureRange){
-                document.getElementById("customSwitch_colorTemperaturRange").checked = true;
-                document.getElementById("temperatureMinK").value = device.attributes.colorTemperatureRange.temperatureMinK;
-                document.getElementById("temperatureMaxK").value = device.attributes.colorTemperatureRange.temperatureMaxK;
-              } else {
-                document.getElementById("customSwitch_colorTemperaturRange").checked = false;
-              }
-              if(device.attributes.commandOnlyColorSetting){
-                document.getElementById("customSwitch_commandOnlyColorSetting").checked = device.attributes.commandOnlyColorSetting;
-              }
-
-              if(device.attributes.availableFanSpeeds){
-                document.getElementById("customSwitch_ordered").checked = device.attributes.availableFanSpeeds.ordered;
-                document.getElementById("customSwitch_reversible").checked = device.attributes.reversible;
-                document.getElementById("customSwitch_commandOnlyFanSpeed").checked = device.attributes.commandOnlyFanSpeed;
-                var availableFanSpeeds = device.attributes.availableFanSpeeds.speeds;
-                var html = "";
-                Object(availableFanSpeeds).forEach(function(fanSpeed){
-                  html += composeFanSpeed(fanSpeed.speed_name, fanSpeed.speed_values.lang, fanSpeed.speed_values.speed_synonym);
-                });
-
-                document.getElementById("availableFanSpeeds").value = JSON.stringify(availableFanSpeeds);
-                document.getElementById("badge_fan_speeds_container").innerHTML = html
-              }
-
-              if(device.attributes.supportedEffects){
-                document.getElementById("customSwitch_colorLoop").checked = true;
-              }
-
-              if (device.attributes.openDirection){
-                var html = "";
-                var string = "";
-                Object(device.attributes.openDirection).forEach(function(name){
-                  html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteOpenDirection(\'' + name + '\')">' + name + '</button>';
-                  string += name + ';';
-                });
-                document.getElementById("openDirection").value = string;
-                document.getElementById("badge_openDirection_container").innerHTML = html;
-                document.getElementById("customSwitch_queryOnlyOpenClose").checked = device.attributes.queryOnlyOpenClose;
-              }
-
-              if(device.attributes.queryOnlyTemperatureControl){
-                document.getElementById("customSwitch_queryOnlyTemperatureControl").checked = device.attributes.queryOnlyTemperatureControl;
-              }
-              if(device.attributes.commandOnlyTemperatureControl){
-                document.getElementById("customSwitch_commandOnlyTemperatureControl").checked = device.attributes.commandOnlyTemperatureControl;
-              }
-              if(device.attributes.temperatureRange){
-                document.getElementById("minThresholdCelsius").value = device.attributes.temperatureRange.minThresholdCelsius;
-                document.getElementById("maxThresholdCelsius").value = device.attributes.temperatureRange.maxThresholdCelsius;
-                document.getElementById("temperatureStepCelsius").value = device.attributes.temperatureStepCelsius;
-                document.getElementById("temperatureUnitForUX").value = device.attributes.temperatureUnitForUX;
-              }
-
-              if(device.attributes.commandOnlyTimer){
-                document.getElementById("customSwitch_commandOnlyTimer").checked = device.attributes.commandOnlyTimer;
-              }
-              if(device.attributes.maxTimerLimitSec){
-                document.getElementById("maxTimerLimitSec").value = device.attributes.maxTimerLimitSec;
-              }
-
-              if(device.attributes.sceneReversible){
-                document.getElementById("customSwitch_sceneReversible").checked = device.attributes.sceneReversible;
-              }
-
-              if(device.attributes.availableArmLevels){
-                document.getElementById("customSwitch_arm_levels_ordered").checked = device.attributes.availableArmLevels.ordered;
-                var availableArmLevels = device.attributes.availableArmLevels.levels;
-                var html = "";
-                Object(availableArmLevels).forEach(function(level){
-                  html += composeArmLevels(level.level_name, level.level_values.lang, level.level_values.level_synonym);
-                });
-
-                document.getElementById("availableArmLevels").value = JSON.stringify(availableArmLevels);
-                document.getElementById("badge_arm_levels_container").innerHTML = html
-              }
-
-              if(device.attributes.cameraStreamSupportedProtocols){
-                var protocols = ["hls","dash"];
-                var supportedProtocols = device.attributes.cameraStreamSupportedProtocols;
-                var html = "";
-                Object(protocols).forEach(function(protocol){
-
-                      if(supportedProtocols.indexOf(protocol) >= 0){
-                        html += '<option selected>' + protocol + '</option>';
-                      } else {
-                        html += '<option>' + protocol + '</option>';
-                      }
-                });
-                document.getElementById("cameraStreamSupportedProtocols").innerHTML = html;
-
-                document.getElementById("customSwitch_cameraStreamNeedAuthToken").checked = device.attributes.cameraStreamNeedAuthToken;
-                document.getElementById("customSwitch_cameraStreamNeedDrmEncryption").checked = device.attributes.cameraStreamNeedDrmEncryption;
-              }
-
-              if(device.attributes.availableThermostatModes){
-                updateThermostatModes(device.attributes.availableThermostatModes.split(","));
-                document.getElementById("thermostatTemperatureUnit").value = device.attributes.thermostatTemperatureUnit;
-                document.getElementById("bufferRangeCelsius").value = device.attributes.bufferRangeCelsius;
-
-                document.getElementById("customSwitch_queryOnlyTemperatureSetting").checked = device.attributes.queryOnlyTemperatureSetting;
-                document.getElementById("customSwitch_commandOnlyTemperatureSetting").checked = device.attributes.commandOnlyTemperatureSetting;
-              }
-
-              if (device.attributes.availableZones){
-                var html = "";
-                var string = "";
-                Object(device.attributes.availableZones).forEach(function(zone){
-                  html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteZone(\'' + zone + '\')">' + zone + '</button>';
-                  string += zone + ';';
-                });
-                document.getElementById("zones").value = string;
-                document.getElementById("badge_zones_container").innerHTML = html;
-                document.getElementById("customSwitch_pausable").checked = device.attributes.pausable;
-              }
-
-              if(device.attributes.sceneReversible){
-                document.getElementById("customSwitch_sceneReversible").checked = device.attributes.sceneReversible;
-              }
-
-            }
+        Object.keys(obj).forEach(function(n){
+          if (obj[n].id == getParameterByName('id')){
+              document.getElementById("n").value = n;
           }
-      });
+        });
+
+        //Get device info
+        Object(obj).forEach(function(device){
+            if (device.id == getParameterByName('id')){
+              document.getElementById("id").value = device.id;
+              document.getElementById("id").readOnly = true;
+              document.getElementById("type").value = device.type;
+              if(device.deviceInfo){
+                document.getElementById("hwVersion").value = device.deviceInfo.hwVersion;
+                document.getElementById("swVersion").value = device.deviceInfo.swVersion;
+                document.getElementById("manufacturer").value = device.deviceInfo.manufacturer;
+                document.getElementById("model").value = device.deviceInfo.model;
+              }
+              document.getElementById("name").value = device.name.name;
+              //Show traits
+              updateTraits(device.traits);
+              updateThermostatModes([]);
+              //Show default names
+              var html = "";
+              var string = "";
+              Object(device.name.defaultNames).forEach(function(name){
+                html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteName(\'default_names\',\'' + name + '\')">' + name + '</button>';
+                string += name + ';';
+              });
+              document.getElementById("badge_default_names_container").innerHTML = html;
+              document.getElementById("default_names").value = string;
+              //Show nick names
+              var html = "";
+              var string = "";
+              Object(device.name.nicknames).forEach(function(name){
+                html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteName(\'nick_names\',\'' + name + '\')">' + name + '</button>';
+                string += name + ';';
+              });
+              document.getElementById("badge_nick_names_container").innerHTML = html;
+              document.getElementById("nick_names").value = string;
+              //Show attributes
+              if(device.attributes){
+                if(device.attributes.availableToggles){
+                  var availableToggles = device.attributes.availableToggles;
+                  var html = "";
+                  Object(availableToggles).forEach(function(toggle){
+                    html += composeToggle(toggle.name, toggle.names_values.lang, toggle.names_values.name_synonym);
+                  });
+
+                  document.getElementById("availableToggles").value = JSON.stringify(availableToggles);
+                  document.getElementById("badge_toggles_container").innerHTML = html
+                }
+
+                if(device.attributes.commandOnlyOnOff){
+                  document.getElementById("customSwitch_commandOnlyOnOff").checked = device.attributes.commandOnlyOnOff;
+                }
+
+                if(device.attributes.colorModel){
+                  document.getElementById("colorModel").value = device.attributes.colorModel;
+                }
+                if(device.attributes.colorTemperatureRange){
+                  document.getElementById("customSwitch_colorTemperaturRange").checked = true;
+                  document.getElementById("temperatureMinK").value = device.attributes.colorTemperatureRange.temperatureMinK;
+                  document.getElementById("temperatureMaxK").value = device.attributes.colorTemperatureRange.temperatureMaxK;
+                } else {
+                  document.getElementById("customSwitch_colorTemperaturRange").checked = false;
+                }
+                if(device.attributes.commandOnlyColorSetting){
+                  document.getElementById("customSwitch_commandOnlyColorSetting").checked = device.attributes.commandOnlyColorSetting;
+                }
+
+                if(device.attributes.availableFanSpeeds){
+                  document.getElementById("customSwitch_ordered").checked = device.attributes.availableFanSpeeds.ordered;
+                  document.getElementById("customSwitch_reversible").checked = device.attributes.reversible;
+                  document.getElementById("customSwitch_commandOnlyFanSpeed").checked = device.attributes.commandOnlyFanSpeed;
+                  var availableFanSpeeds = device.attributes.availableFanSpeeds.speeds;
+                  var html = "";
+                  Object(availableFanSpeeds).forEach(function(fanSpeed){
+                    html += composeFanSpeed(fanSpeed.speed_name, fanSpeed.speed_values.lang, fanSpeed.speed_values.speed_synonym);
+                  });
+
+                  document.getElementById("availableFanSpeeds").value = JSON.stringify(availableFanSpeeds);
+                  document.getElementById("badge_fan_speeds_container").innerHTML = html
+                }
+
+                if(device.attributes.supportedEffects){
+                  document.getElementById("customSwitch_colorLoop").checked = true;
+                }
+
+                if (device.attributes.openDirection){
+                  var html = "";
+                  var string = "";
+                  Object(device.attributes.openDirection).forEach(function(name){
+                    html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteOpenDirection(\'' + name + '\')">' + name + '</button>';
+                    string += name + ';';
+                  });
+                  document.getElementById("openDirection").value = string;
+                  document.getElementById("badge_openDirection_container").innerHTML = html;
+                  document.getElementById("customSwitch_queryOnlyOpenClose").checked = device.attributes.queryOnlyOpenClose;
+                }
+
+                if(device.attributes.queryOnlyTemperatureControl){
+                  document.getElementById("customSwitch_queryOnlyTemperatureControl").checked = device.attributes.queryOnlyTemperatureControl;
+                }
+                if(device.attributes.commandOnlyTemperatureControl){
+                  document.getElementById("customSwitch_commandOnlyTemperatureControl").checked = device.attributes.commandOnlyTemperatureControl;
+                }
+                if(device.attributes.temperatureRange){
+                  document.getElementById("minThresholdCelsius").value = device.attributes.temperatureRange.minThresholdCelsius;
+                  document.getElementById("maxThresholdCelsius").value = device.attributes.temperatureRange.maxThresholdCelsius;
+                  document.getElementById("temperatureStepCelsius").value = device.attributes.temperatureStepCelsius;
+                  document.getElementById("temperatureUnitForUX").value = device.attributes.temperatureUnitForUX;
+                }
+
+                if(device.attributes.commandOnlyTimer){
+                  document.getElementById("customSwitch_commandOnlyTimer").checked = device.attributes.commandOnlyTimer;
+                }
+                if(device.attributes.maxTimerLimitSec){
+                  document.getElementById("maxTimerLimitSec").value = device.attributes.maxTimerLimitSec;
+                }
+
+                if(device.attributes.sceneReversible){
+                  document.getElementById("customSwitch_sceneReversible").checked = device.attributes.sceneReversible;
+                }
+
+                if(device.attributes.availableArmLevels){
+                  document.getElementById("customSwitch_arm_levels_ordered").checked = device.attributes.availableArmLevels.ordered;
+                  var availableArmLevels = device.attributes.availableArmLevels.levels;
+                  var html = "";
+                  Object(availableArmLevels).forEach(function(level){
+                    html += composeArmLevels(level.level_name, level.level_values.lang, level.level_values.level_synonym);
+                  });
+
+                  document.getElementById("availableArmLevels").value = JSON.stringify(availableArmLevels);
+                  document.getElementById("badge_arm_levels_container").innerHTML = html
+                }
+
+                if(device.attributes.cameraStreamSupportedProtocols){
+                  var protocols = ["hls","dash"];
+                  var supportedProtocols = device.attributes.cameraStreamSupportedProtocols;
+                  var html = "";
+                  Object(protocols).forEach(function(protocol){
+
+                        if(supportedProtocols.indexOf(protocol) >= 0){
+                          html += '<option selected>' + protocol + '</option>';
+                        } else {
+                          html += '<option>' + protocol + '</option>';
+                        }
+                  });
+                  document.getElementById("cameraStreamSupportedProtocols").innerHTML = html;
+
+                  document.getElementById("customSwitch_cameraStreamNeedAuthToken").checked = device.attributes.cameraStreamNeedAuthToken;
+                  document.getElementById("customSwitch_cameraStreamNeedDrmEncryption").checked = device.attributes.cameraStreamNeedDrmEncryption;
+                }
+
+                if(device.attributes.availableThermostatModes){
+                  updateThermostatModes(device.attributes.availableThermostatModes.split(","));
+                  document.getElementById("thermostatTemperatureUnit").value = device.attributes.thermostatTemperatureUnit;
+                  document.getElementById("bufferRangeCelsius").value = device.attributes.bufferRangeCelsius;
+
+                  document.getElementById("customSwitch_queryOnlyTemperatureSetting").checked = device.attributes.queryOnlyTemperatureSetting;
+                  document.getElementById("customSwitch_commandOnlyTemperatureSetting").checked = device.attributes.commandOnlyTemperatureSetting;
+                }
+
+                if (device.attributes.availableZones){
+                  var html = "";
+                  var string = "";
+                  Object(device.attributes.availableZones).forEach(function(zone){
+                    html += '<button type="button" class="btn btn-primary" style="margin: 5px;" title="Click to delete" onclick="deleteZone(\'' + zone + '\')">' + zone + '</button>';
+                    string += zone + ';';
+                  });
+                  document.getElementById("zones").value = string;
+                  document.getElementById("badge_zones_container").innerHTML = html;
+                  document.getElementById("customSwitch_pausable").checked = device.attributes.pausable;
+                }
+
+                if(device.attributes.sceneReversible){
+                  document.getElementById("customSwitch_sceneReversible").checked = device.attributes.sceneReversible;
+                }
+
+              }
+            }
+        });
+
+
+      } catch {
+        console.log("0");
+        document.getElementById("n").value = 0;
+      }
 
 
   });
