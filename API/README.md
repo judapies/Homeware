@@ -271,7 +271,7 @@ The console allow you to manage your devices.
 
 3. Take note of the `Web API key` for later.
 
-4. Go to `public` folder and configure the API key and the Project ID in all the JS files.
+4. Go to `public` folder and configure the API key and the Project ID in config.js files.
 
 5. Go back to `API` directory and run:
 
