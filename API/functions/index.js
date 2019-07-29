@@ -8,7 +8,17 @@ var crypto = require("crypto");
 var XMLHttpRequest = require('xhr2');
 
 // Initialize Firebase
-admin.initializeApp();
+
+try{
+  var serviceAccount = require("./serviceAccountKey.json");
+  admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: functions.config()['system']['database']
+  });
+} catch (e) {
+  admin.initializeApp();
+}
+
 const firebaseRef = admin.database().ref('/status/');
 
 //API constants
@@ -17,7 +27,7 @@ const deviceAliveTimeout = 20000;
 exports.read = functions.https.onRequest((req, res) =>{
   //Hardware data
   var id = req.query.id;
-  var token = req.get("authorization").split(" ")[1];
+  var token = req.get("authorization").split(" ")[1] ? req.get("authorization").split(" ")[1] : req.get("Authorization").split(" ")[1];
   var agent = req.get("User-Agent").split(" ")[1];
   var param = req.query.param;
   var value = req.query.value;
