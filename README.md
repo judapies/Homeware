@@ -8,6 +8,9 @@ Homeware is not finished yet.
 ## Advice
 Use only released versions: <a href="https://github.com/kikeelectronico/Homeware/releases/latest">Last released</a>
 
+## Stay up to date
+Subscribe to this Telegram channel: [https://t.me/homeware_up_to_date](https://t.me/homeware_up_to_date)
+
 ## Supported Devices and traits
 
 All traits and devices are supported under an experimental function. If you see something wrong, please open an issue: [https://github.com/kikeelectronico/Homeware/issues/new](https://github.com/kikeelectronico/Homeware/issues/new)
